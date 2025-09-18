@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,7 +44,7 @@ public class Course {
     )
 
     @OneToMany(mappedBy = "course")
-    private Set<Module> modules;
+    private Set<Module> modules =  new HashSet<>();
 
     @ManyToOne
     private User  teacher;

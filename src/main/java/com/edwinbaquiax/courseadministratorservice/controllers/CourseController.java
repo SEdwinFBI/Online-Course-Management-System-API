@@ -174,7 +174,6 @@ public class CourseController {
      * <p>Requiere rol <b>TEACHER</b> o <b>ADMIN</b>.</p>
      *
      * @param courseId identificador del curso
-     * @param userId identificador del usuario que realiza la acción
      * @param request datos actualizados del curso
      * @return curso actualizado con código HTTP 200 (OK)
      */

@@ -3,7 +3,7 @@ spring:
         name: course-administrator-service
     datasource:
         driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:5432/${name.postgresql.db}
+        url: ${uri.postgresql}/${name.postgresql.db}
         username: ${user.postgresql}
         password: ${password.postgresql}
     data:

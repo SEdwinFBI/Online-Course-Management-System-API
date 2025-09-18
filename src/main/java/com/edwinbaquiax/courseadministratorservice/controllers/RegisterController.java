@@ -42,7 +42,7 @@ public class RegisterController {
      * </ul>
      */
     @PostMapping
-    public ResponseEntity<?> Register(@Valid  @RequestBody RegisterUserDTO user, BindingResult bindingResult){
+    public ResponseEntity<?> register(@Valid  @RequestBody RegisterUserDTO user, BindingResult bindingResult){
         if(bindingResult.hasFieldErrors()){
             return validation(bindingResult);
         }

@@ -30,4 +30,5 @@ public interface ICourseRepository extends JpaRepository<Course, Long> {
     Page<Course> findCoursesByTeacher_Id(Long teacherId, Pageable pageable);
     
     Optional<Course> findByModulesContaining(Set<Module> modules);
+    Optional<Course> findByIdAndTeacher_Id(Long id, Long teacherId);
 }

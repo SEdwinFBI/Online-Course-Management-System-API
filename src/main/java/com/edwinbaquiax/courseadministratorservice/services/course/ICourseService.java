@@ -14,6 +14,7 @@ public interface ICourseService {
     Page<CourseResponseDTO> findCoursesByStudent(Long userId,int page, int size);
     CourseResponseDTO findById(Long courseId);
     CourseResponseDTO createCourse(Long userId, CourseRequestDTO request);
+    CourseResponseDTO deleteCourse(Long userId, Long courseId);
     CourseResponseDTO updateCourse(Long courseId, Long userId, CourseRequestDTO request);
 
 

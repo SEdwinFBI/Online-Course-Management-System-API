@@ -98,6 +98,13 @@ public class CourseService implements ICourseService {
     }
 
     @Override
+    public CourseResponseDTO deleteCourse(Long userId, Long courseId) {
+        Course course = courseRepository.findByIdAndTeacher_Id(courseId,userId).orElseThrow(CourseNotFoundException::new);
+        courseRepository.delete(course);
+        return courseEntityToCourseResponseDTO(course);
+    }
+
+    @Override
     @Transactional
     public CourseResponseDTO updateCourse(Long courseId, Long userId, CourseRequestDTO request) {
         Course existCourse = courseRepository.findById(courseId).orElseThrow(CourseNotFoundException::new);

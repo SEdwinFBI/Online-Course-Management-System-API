@@ -109,4 +109,28 @@ public class EnrollmentController {
         Page<EnrollmentResponseDTO> body = enrollmentService.getEnrollmentsByCourse(courseId, page, size);
         return ResponseEntity.ok(body);
     }
+
+    @GetMapping("/{enrollmentId}")
+    public ResponseEntity<EnrollmentResponseDTO> getEnrollmentById(@PathVariable Long enrollmentId) {
+        EnrollmentResponseDTO body = enrollmentService.getEnrollmentById(enrollmentId);
+        return ResponseEntity.ok(body);
+    }
+
+    @PutMapping("/{enrollmentId}")
+    @PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
+    public ResponseEntity<EnrollmentResponseDTO> updateEnrollment(
+            @PathVariable Long enrollmentId,
+            @RequestBody EnrollmentRequestDTO request) {
+        EnrollmentResponseDTO body = enrollmentService.updateEnrollment(enrollmentId, request);
+        return ResponseEntity.ok(body);
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
+    public ResponseEntity<Page<EnrollmentResponseDTO>> getAllEnrollments(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        Page<EnrollmentResponseDTO> body = enrollmentService.getAllEnrollments(page, size);
+        return ResponseEntity.ok(body);
+    }
 }

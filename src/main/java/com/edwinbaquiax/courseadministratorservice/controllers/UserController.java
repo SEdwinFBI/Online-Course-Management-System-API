@@ -2,6 +2,7 @@ package com.edwinbaquiax.courseadministratorservice.controllers;
 
 
 import com.edwinbaquiax.courseadministratorservice.models.dtos.user.UserResponseDTO;
+import com.edwinbaquiax.courseadministratorservice.models.mappers.UserProfile;
 import com.edwinbaquiax.courseadministratorservice.services.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,5 +61,32 @@ public class UserController {
         UserResponseDTO user = userService.updateRoleUser(id, roleNames);
 
         return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
+        UserResponseDTO user = userService.findById(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @RequestBody UserResponseDTO userDetails) {
+        UserResponseDTO updatedUser = userService.update(id, UserProfile.userResponseDTOToUserEntity(userDetails));
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/exists/{username}")
+    public ResponseEntity<Boolean> existsByUsername(@PathVariable String username) {
+        boolean exists = userService.existsByUsername(username);
+        return ResponseEntity.ok(exists);
     }
 }

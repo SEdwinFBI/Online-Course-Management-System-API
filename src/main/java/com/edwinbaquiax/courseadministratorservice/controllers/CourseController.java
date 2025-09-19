@@ -187,6 +187,14 @@ public class CourseController {
         return ResponseEntity.ok(body);
     }
 
+    @DeleteMapping("/{courseId}")
+    @PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
+    public ResponseEntity<CourseResponseDTO> deleteCourse(@PathVariable Long courseId) {
+
+        CourseResponseDTO body = courseService.deleteCourse(currentUser.getUserId(),courseId);
+        return ResponseEntity.ok(body);
+    }
+
 
 
 }

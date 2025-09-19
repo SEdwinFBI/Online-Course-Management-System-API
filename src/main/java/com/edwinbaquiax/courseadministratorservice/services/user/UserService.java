@@ -101,7 +101,32 @@ public class UserService implements IUserService {
                 }
         );
     }
+    @Transactional
+    @Override
+    public UserResponseDTO update(Long userId, User userDetails) {
+        User existUser = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
 
+        if(!existUser.getUsername().equals(userDetails.getUsername()) &&
+                userRepository.existsByUsername(userDetails.getUsername())) {
+            throw new UsernameIsExistsException();
+        }
+
+        existUser.setUsername(userDetails.getUsername());
+        existUser.setEmail(userDetails.getEmail());
+        if(userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()){
+            existUser.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+        }
+        return userEntityToUserResponseDTO(userRepository.save(existUser));
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long userId) {
+        User existUser = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        userRepository.delete(existUser);
+    }
     @Override
     @Transactional
     public boolean existsByUsername(String username) {

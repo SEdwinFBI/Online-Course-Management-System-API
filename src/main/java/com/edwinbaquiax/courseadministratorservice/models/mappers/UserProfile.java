@@ -27,4 +27,15 @@ public class UserProfile {
                 .roles(entity.getRoles())
                 .build();
     }
+    public static User userResponseDTOToUserEntity(UserResponseDTO dto){
+        return User.builder()
+                .id(dto.getId())
+                .username(dto.getUsername())
+                .email(dto.getEmail())
+                .name(dto.getName())
+                .lastname(dto.getLastname())
+                .enabled(dto.isEnabled())
+                .roles(dto.getRoles())
+                .build();
+    }
 }

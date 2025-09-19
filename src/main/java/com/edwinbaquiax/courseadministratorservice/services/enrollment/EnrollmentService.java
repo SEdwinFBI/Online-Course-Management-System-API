@@ -84,4 +84,43 @@ public class EnrollmentService implements IEnrollmentService{
 
         return enrollments.map(EnrollmentProfile::enrollmentEntityToEnrollmentResponseDTO);
     }
+    @Transactional(readOnly = true)
+    @Override
+    public EnrollmentResponseDTO getEnrollmentById(Long enrollmentId) {
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId)
+                .orElseThrow(EnrollmentNotFoundException::new);
+        return enrollmentEntityToEnrollmentResponseDTO(enrollment);
+    }
+
+    @Transactional
+    @Override
+    public EnrollmentResponseDTO updateEnrollment(Long enrollmentId, EnrollmentRequestDTO request) {
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId)
+                .orElseThrow(EnrollmentNotFoundException::new);
+
+        if(!enrollment.getUser().getId().equals(request.getUserId())) {
+            User user = userRepository.findById(request.getUserId())
+                    .orElseThrow(UserNotFoundException::new);
+            enrollment.setUser(user);
+        }
+
+        if(!enrollment.getCourse().getId().equals(request.getCourseId())) {
+            Course course = courseRepository.findById(request.getCourseId())
+                    .orElseThrow(CourseNotFoundException::new);
+            enrollment.setCourse(course);
+        }
+
+
+
+        Enrollment updated = enrollmentRepository.save(enrollment);
+        return enrollmentEntityToEnrollmentResponseDTO(updated);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<EnrollmentResponseDTO> getAllEnrollments(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").ascending());
+        Page<Enrollment> enrollments = enrollmentRepository.findAll(pageable);
+        return enrollments.map(EnrollmentProfile::enrollmentEntityToEnrollmentResponseDTO);
+    }
 }
